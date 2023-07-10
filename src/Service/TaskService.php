@@ -7,11 +7,6 @@ use App\Entity\Task;
 
 class TaskService
 {
-
-    public function newTask2($data, $taskRepository, $subTaskRepository): ?Task
-    {
-        return 'teste';
-    }
     public function newTask($data, $taskRepository, $subTaskRepository): ?Task
     {
 
