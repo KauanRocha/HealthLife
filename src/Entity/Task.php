@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
@@ -43,6 +42,11 @@ class Task
     #[Groups("jsonTask")]
 
     private Collection $Subtasks;
+
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups("jsonTask")]
+    private ?Recurring $recurring = null;
 
     public function __construct()
     {
@@ -140,6 +144,18 @@ class Task
                 $subtask->setTask(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRecurring(): ?Recurring
+    {
+        return $this->recurring;
+    }
+
+    public function setRecurring(?Recurring $recurring): static
+    {
+        $this->recurring = $recurring;
 
         return $this;
     }

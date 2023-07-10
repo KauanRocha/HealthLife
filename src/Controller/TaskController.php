@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\RecurringRepository;
 use App\Repository\SubTaskRepository;
 use App\Repository\TaskRepository;
 use App\Service\TaskService;
@@ -37,11 +38,11 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks', name: 'taskCreate', methods: ['POST'])]
-    public function create(Request $request, TaskService $taskService, TaskRepository $taskRepository, SubTaskRepository $subTaskRepository): JsonResponse
+    public function create(Request $request, TaskService $taskService, TaskRepository $taskRepository, SubTaskRepository $subTaskRepository, RecurringRepository $recurringRepository): JsonResponse
     {
         $data = $request->toArray();
 
-        $task = $taskService->newTask($data, $taskRepository, $subTaskRepository);
+        $task = $taskService->newTask($data, $taskRepository, $subTaskRepository, $recurringRepository);
 
         return $this->json(
             $task, 200, ['message' => 'Task created successfully!'], ['groups' => ['jsonTask']]
